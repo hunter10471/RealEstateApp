@@ -1,0 +1,19 @@
+@import "../../../responsive.scss";
+
+.logo {
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	font-size: 20px;
+	gap: 5px;
+
+	span {
+		@include md {
+			display: none;
+		}
+
+		@include sm {
+			display: initial;
+		}
+	}
+}
