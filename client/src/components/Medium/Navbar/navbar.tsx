@@ -2,12 +2,19 @@ import Button from "../../Small/Button/Button";
 import Logo from "../../Small/Logo/Logo";
 import { IoMenu } from "react-icons/io5";
 import "./navbar.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 interface NavbarProps {}
 
 const Navbar = ({}: NavbarProps) => {
 	const [open, setOpen] = useState(false);
+	const { width } = useWindowSize();
+	useEffect(() => {
+		if (width && width > 760) {
+			setOpen(false);
+		}
+	}, [width]);
 	return (
 		<nav>
 			<div className="left">
