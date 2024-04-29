@@ -4,6 +4,7 @@ import { IoMenu } from "react-icons/io5";
 import "./navbar.scss";
 import { useEffect, useState } from "react";
 import useWindowSize from "../../../hooks/useWindowSize";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {}
 
@@ -19,10 +20,10 @@ const Navbar = ({}: NavbarProps) => {
 		<nav>
 			<div className="left">
 				<Logo />
-				<a href="/">Home</a>
-				<a href="/">About</a>
-				<a href="/">Contact</a>
-				<a href="/">Agents</a>
+				<Link to={`/`}>Home</Link>
+				<Link to={`/`}>About</Link>
+				<Link to={`/`}>Contact</Link>
+				<Link to={`/`}>Agents</Link>
 			</div>
 			<div className="right">
 				<Button text="Sign In" />
@@ -32,10 +33,10 @@ const Navbar = ({}: NavbarProps) => {
 				</div>
 			</div>
 			<div className={open ? "menu active" : "menu"}>
-				<a href="/">Home</a>
-				<a href="/">About</a>
-				<a href="/">Contact</a>
-				<a href="/">Agents</a>
+				<Link to={`/`}>Home</Link>
+				<Link to={`/`}>About</Link>
+				<Link to={`/`}>Contact</Link>
+				<Link to={`/`}>Agents</Link>
 				<div className="button-group">
 					<Button text="Sign In" />
 					<Button isPrimary text="Sign Up" />
