@@ -24,6 +24,50 @@ nav {
 			}
 		}
 
+		.user {
+			display: flex;
+			align-items: center;
+			font-weight: bold;
+			gap: 20px;
+
+			@include md {
+				span {
+					display: none;
+				}
+			}
+			img {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+			.profile {
+				padding: 12px 24px;
+				background-color: #fece51;
+				cursor: pointer;
+				border: none;
+				position: relative;
+				overflow: visible;
+				@include sm {
+					display: none;
+				}
+
+				.notification {
+					position: absolute;
+					background-color: red;
+					color: white;
+					border-radius: 50%;
+					width: 26px;
+					height: 26px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					top: -5px;
+					right: -10px;
+				}
+			}
+		}
+
 		.menuIcon {
 			cursor: pointer;
 			transition: all 0.5ms ease;
