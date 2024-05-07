@@ -4,6 +4,7 @@
 	padding: 10px 20px;
 	border-radius: 4px;
 	font-weight: 500;
+	border: 1px solid #dddd;
 	cursor: pointer;
 	transition: all 0.4s ease;
 	border: none;
@@ -15,4 +16,8 @@
 
 .primary {
 	background-color: #fece51;
+}
+
+.fullWidth {
+	width: 100%;
 }

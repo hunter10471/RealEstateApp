@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
-import Button from "../../components/Small/Button/Button";
-import "./login.scss";
+import Button from "../Small/Button/Button";
+import "./register.scss";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useState } from "react";
 
-const Login = () => {
+const Register = () => {
 	const [showPass, setShowPass] = useState(false);
 	return (
-		<div className="login">
+		<div className="register">
 			<div className="inputContainer">
-				<h1>Login to your account</h1>
+				<h1>Create an account</h1>
 				<form>
 					<input type="text" name="username" placeholder="Username" />
+					<input type="email" name="email" placeholder="Email" />
 					<div className="password">
 						<input
 							type={showPass ? "text" : "password"}
@@ -26,8 +27,8 @@ const Login = () => {
 					</div>
 					<Button fullWidth text="Submit" isPrimary />
 				</form>
-				<Link className="redirect" to={"/register"}>
-					Don't have an account? Create one.
+				<Link className="redirect" to={"/login"}>
+					Already have an account? Login.
 				</Link>
 			</div>
 			<div className="imageContainer">
@@ -37,4 +38,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Register;
