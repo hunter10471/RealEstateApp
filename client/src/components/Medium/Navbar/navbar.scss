@@ -51,7 +51,7 @@ nav {
 				@include sm {
 					display: none;
 				}
-
+				z-index: 999;
 				.notification {
 					position: absolute;
 					background-color: red;

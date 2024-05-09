@@ -5,7 +5,7 @@ import List from "./pages/List/List";
 import Login from "./pages/Login/Login";
 import Single from "./pages/Single/Single";
 import Profile from "./pages/Profile/Profile";
-import Register from "./components/Register/Register";
+import Register from "./pages/Register/Register";
 
 function App() {
 	const router = createBrowserRouter([

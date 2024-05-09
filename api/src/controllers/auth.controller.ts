@@ -63,10 +63,11 @@ export const login = async (req: Request, res: Response) => {
 						expiresIn: tokenAge,
 					}
 				);
+				const { password: userPassword, ...user } = existingUser;
 				return res
 					.cookie("token", token, { httpOnly: true, maxAge: tokenAge })
 					.status(200)
-					.json({ message: "Login successful." });
+					.json({ message: "Login successful.", user });
 			} else {
 				return res.status(401).json({
 					message: "Incorrect credentials.",

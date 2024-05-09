@@ -44,7 +44,16 @@
 				span {
 					display: flex;
 					align-items: center;
-					gap: 20px;
+					gap: 10px;
+				}
+				button {
+					padding: 12px 24px;
+					background-color: teal;
+					border-radius: 5px;
+					color: white;
+					cursor: pointer;
+					border: none;
+					width: fit-content;
 				}
 				img {
 					width: 40px;
