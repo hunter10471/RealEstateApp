@@ -2,14 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Small/Button/Button";
 import "./login.scss";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import apiRequest from "../../lib/apiRequest";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<any>(null);
+
+	const user = useContext(AuthContext)?.currentUser;
+	const updateUser = useContext(AuthContext)?.updateUser;
+
 	const navigate = useNavigate();
+
 	const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
@@ -23,8 +29,8 @@ const Login = () => {
 				password,
 			});
 
-			if (res.data) {
-				localStorage.setItem("user", JSON.stringify(res.data));
+			if (res.data && updateUser) {
+				updateUser(res.data);
 				navigate("/");
 			}
 		} catch (error: any) {
@@ -34,6 +40,7 @@ const Login = () => {
 			setLoading(false);
 		}
 	};
+
 	return (
 		<div className="login">
 			<div className="inputContainer">

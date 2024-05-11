@@ -2,16 +2,18 @@ import Button from "../../Small/Button/Button";
 import Logo from "../../Small/Logo/Logo";
 import { IoMenu } from "react-icons/io5";
 import "./navbar.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 interface NavbarProps {}
 
 const Navbar = ({}: NavbarProps) => {
 	const [open, setOpen] = useState(false);
+	const user = useContext(AuthContext)?.currentUser;
 	const { width } = useWindowSize();
-	const user = true;
+
 	useEffect(() => {
 		if (width && width > 760) {
 			setOpen(false);
@@ -29,11 +31,8 @@ const Navbar = ({}: NavbarProps) => {
 			<div className="right">
 				{user ? (
 					<div className="user">
-						<img
-							src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-							alt=""
-						/>
-						<span>John Doe</span>
+						<img src={user.avatar || "./assets/avatar.png"} alt="" />
+						<span>{user.username}</span>
 						<Link className="profile" to={"/profile"}>
 							Profile
 							<div className="notification">3</div>

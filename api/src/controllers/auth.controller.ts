@@ -67,7 +67,7 @@ export const login = async (req: Request, res: Response) => {
 				return res
 					.cookie("token", token, { httpOnly: true, maxAge: tokenAge })
 					.status(200)
-					.json({ message: "Login successful.", user });
+					.json(user);
 			} else {
 				return res.status(401).json({
 					message: "Incorrect credentials.",
