@@ -19,7 +19,8 @@ const Navbar = ({}: NavbarProps) => {
 		if (width && width > 760) {
 			setOpen(false);
 		}
-	}, [width]);
+	}, [width, window.scrollY]);
+
 	return (
 		<nav>
 			<div className="left">

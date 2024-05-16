@@ -6,32 +6,30 @@ import { FaRegBookmark } from "react-icons/fa";
 import { FaRegMessage } from "react-icons/fa6";
 
 interface CardProps {
-	id: number;
+	id: string;
 	title: string;
-	img: string;
+	images: string[];
 	bedroom: number;
 	bathroom: number;
 	price: number;
 	address: string;
-	latitude: number;
-	longitude: number;
+	latitude: string;
+	longitude: string;
 }
 
 const Card = ({
 	id,
 	title,
-	img,
+	images,
 	bedroom,
 	bathroom,
 	price,
 	address,
-	latitude,
-	longitude,
 }: CardProps) => {
 	return (
 		<div className="card">
 			<Link to={`/${id}`} className="imageContainer">
-				<img src={img} alt="property image" />
+				<img src={images[0]} alt="property image" />
 			</Link>
 			<div className="textContainer">
 				<h2 className="title">

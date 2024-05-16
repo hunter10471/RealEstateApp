@@ -10,3 +10,8 @@ export const singlePageLoader = async ({
 	const res = await apiRequest("/post/" + params.id);
 	return res.data;
 };
+
+export const listPageLoader = async () => {
+	const res = await apiRequest("/post");
+	return res.data;
+};

@@ -3,7 +3,6 @@
 .singlePage {
 	display: flex;
 	height: 100%;
-
 	@include md {
 		flex-direction: column;
 		overflow: scroll;
@@ -12,7 +11,7 @@
 		flex: 3;
 		height: 100%;
 		overflow-y: scroll;
-		padding-bottom: 40px;
+		padding-bottom: 100px;
 		@include md {
 			flex: none;
 			height: max-content;
@@ -30,9 +29,10 @@
 					.post {
 						display: flex;
 						flex-direction: column;
-						gap: 20px;
+						gap: 10px;
 						h1 {
-							font-weight: 400;
+							font-weight: 700;
+							font-family: "Montserrat";
 						}
 						.address {
 							display: flex;
@@ -55,7 +55,8 @@
 						align-items: center;
 						justify-content: center;
 						gap: 20px;
-						padding: 0 50px;
+						padding: 25px 50px;
+						height: fit-content;
 						border-radius: 10px;
 						background-color: rgba(254, 205, 81, 0.298);
 						font-weight: 600;
@@ -73,8 +74,28 @@
 				}
 				.bottom {
 					margin-top: 50px;
-					color: #555;
-					line-height: 20px;
+					display: flex;
+					flex-direction: column;
+					gap: 20px;
+					line-height: 25px;
+
+					font-family: "Montserrat";
+					h1 {
+						font-weight: 600;
+						font-size: 23px;
+					}
+					h2 {
+						font-weight: 600;
+						font-size: 21px;
+					}
+					h3 {
+						font-weight: 600;
+						font-size: 19px;
+					}
+					p {
+						font-size: 14px;
+						font-weight: 500;
+					}
 				}
 			}
 		}

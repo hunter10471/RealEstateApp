@@ -1,20 +1,20 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "./map.scss";
 import "leaflet/dist/leaflet.css";
-import { ListData } from "../../../interfaces/data";
 import Pin from "../../Small/Pin/Pin";
+import { Post } from "../../../interfaces/post.interface";
 
 interface MapProps {
-	data: ListData[];
+	data: Post[];
 }
 
 const Map = ({ data }: MapProps) => {
 	return (
 		<MapContainer
 			className="map"
-			center={[51.505, -0.09]}
-			zoom={10}
-			scrollWheelZoom={false}
+			center={[30.3753, 69.3451]}
+			zoom={5}
+			scrollWheelZoom={true}
 		>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

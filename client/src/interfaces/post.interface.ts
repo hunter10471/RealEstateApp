@@ -6,8 +6,8 @@ export interface Post {
 	title: string;
 	price: number;
 	images: string[];
-	address: String;
-	city: String;
+	address: string;
+	city: string;
 	bedroom: number;
 	bathroom: number;
 	latitude: string;
@@ -30,6 +30,7 @@ export interface PostDetails {
 	size: number;
 	school: number;
 	restaurant: number;
+	bus: number;
 	postId: string;
 	post: Post;
 }

@@ -1,6 +1,5 @@
 import Map from "../../components/Large/Map/Map";
 import Slider from "../../components/Medium/Slider/Slider";
-import { userData } from "../../lib/dummyData";
 import "./single.scss";
 import {
 	IoLocationOutline,
@@ -19,10 +18,10 @@ import { RxDimensions } from "react-icons/rx";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { useLoaderData } from "react-router-dom";
 import { Post } from "../../interfaces/post.interface";
+import DomPurify from "dompurify";
 
 const Single = () => {
 	const post = useLoaderData() as Post;
-	console.log(post);
 	return (
 		<div className="singlePage">
 			<div className="details">
@@ -39,11 +38,16 @@ const Single = () => {
 								<div className="price">$ {post.price}</div>
 							</div>
 							<div className="user">
-								<img src={userData.img} alt="user avatar" />
-								<span>{userData.name}</span>
+								<img src={post.user.avatar} alt="user avatar" />
+								<span>{post.user.username}</span>
 							</div>
 						</div>
-						<div className="bottom">{post.postDetails.description}</div>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: DomPurify.sanitize(post.postDetails.description),
+							}}
+							className="bottom"
+						></div>
 					</div>
 				</div>
 			</div>
@@ -55,21 +59,21 @@ const Single = () => {
 							<AiOutlineThunderbolt className="icon" />
 							<div className="featureText">
 								<span>Utilities</span>
-								<p>Renter is responsible</p>
+								<p>{post.postDetails.utilities}</p>
 							</div>
 						</div>
 						<div className="feature">
 							<IoPawOutline className="icon" />
 							<div className="featureText">
 								<span>Pet Policy</span>
-								<p>Pets are allowed</p>
+								<p>{post.postDetails.pet}</p>
 							</div>
 						</div>
 						<div className="feature">
 							<FaRegMoneyBill1 className="icon" />
 							<div className="featureText">
 								<span>Property Fees</span>
-								<p>Must have 3 times the rent in household income</p>
+								<p>{post.postDetails.income}</p>
 							</div>
 						</div>
 					</div>
@@ -77,15 +81,15 @@ const Single = () => {
 					<div className="sizes">
 						<div className="size">
 							<RxDimensions className="icon" />
-							<span>80 sq.ft</span>
+							<span>{post.postDetails.size} sq.ft</span>
 						</div>
 						<div className="size">
 							<IoBedOutline className="icon" />
-							<span>2 bed</span>
+							<span>{post.bedroom} bed</span>
 						</div>
 						<div className="size">
 							<MdOutlineBathtub className="icon" />
-							<span>1 bathroom</span>
+							<span>{post.bathroom} bathroom</span>
 						</div>
 					</div>
 					<p className="title">Nearby Places</p>
@@ -94,21 +98,30 @@ const Single = () => {
 							<MdOutlineSchool className="icon" />
 							<div className="featureText">
 								<span>School</span>
-								<p>250m away</p>
+								<p>
+									{post.postDetails.school}
+									{post.postDetails.school > 1000 ? +" km" : " m"} away
+								</p>
 							</div>
 						</div>
 						<div className="feature">
 							<FaBusSimple className="icon" />
 							<div className="featureText">
 								<span>Bus Stop</span>
-								<p>100m away</p>
+								<p>
+									{post.postDetails.bus}
+									{post.postDetails.bus > 1000 ? +" km" : " m"} away
+								</p>
 							</div>
 						</div>
 						<div className="feature">
 							<IoRestaurantOutline className="icon" />
 							<div className="featureText">
 								<span>Restaurant</span>
-								<p>200m away</p>
+								<p>
+									{post.postDetails.restaurant}
+									{post.postDetails.restaurant > 1000 ? +" km" : " m"} away
+								</p>
 							</div>
 						</div>
 					</div>

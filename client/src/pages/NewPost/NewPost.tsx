@@ -10,7 +10,7 @@ const NewPostPage = () => {
 	const [value, setValue] = useState("");
 	const [images, setImages] = useState([]);
 	const [error, setError] = useState("");
-
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -26,6 +26,7 @@ const NewPostPage = () => {
 		}
 
 		try {
+			setLoading(true);
 			const res = await apiRequest.post("/post", {
 				postData: {
 					title: inputs.title,
@@ -41,7 +42,7 @@ const NewPostPage = () => {
 					images: images,
 				},
 				postDetails: {
-					desc: value,
+					description: value,
 					utilities: inputs.utilities,
 					pet: inputs.pet,
 					income: inputs.income,
@@ -56,6 +57,7 @@ const NewPostPage = () => {
 			console.log(err);
 			setError(error);
 		}
+		setLoading(false);
 	};
 
 	return (
@@ -159,7 +161,9 @@ const NewPostPage = () => {
 							<label htmlFor="restaurant">Restaurant</label>
 							<input min={0} id="restaurant" name="restaurant" type="number" />
 						</div>
-						<button className="sendButton">Add</button>
+						<button disabled={loading} className="sendButton">
+							Add
+						</button>
 						{error && <span>error</span>}
 					</form>
 				</div>
