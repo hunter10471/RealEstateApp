@@ -4,15 +4,16 @@ import { IoMenu } from "react-icons/io5";
 import "./navbar.scss";
 import { useContext, useEffect, useState } from "react";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 
 interface NavbarProps {}
 
 const Navbar = ({}: NavbarProps) => {
 	const [open, setOpen] = useState(false);
-	const user = useContext(AuthContext)?.currentUser;
+	const { currentUser } = useContext(AuthContext);
 	const { width } = useWindowSize();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (width && width > 760) {
@@ -29,10 +30,10 @@ const Navbar = ({}: NavbarProps) => {
 				<Link to={`/`}>Agents</Link>
 			</div>
 			<div className="right">
-				{user ? (
+				{currentUser ? (
 					<div className="user">
-						<img src={user.avatar || "./assets/avatar.png"} alt="" />
-						<span>{user.username}</span>
+						<img src={currentUser.avatar || "/assets/avatar.png"} alt="" />
+						<span>{currentUser.username}</span>
 						<Link className="profile" to={"/profile"}>
 							Profile
 							<div className="notification">3</div>
@@ -40,8 +41,12 @@ const Navbar = ({}: NavbarProps) => {
 					</div>
 				) : (
 					<>
-						<Button text="Sign In" />
-						<Button isPrimary text="Sign Up" />
+						<Button onClick={() => navigate("/login")} text="Sign In" />
+						<Button
+							isPrimary
+							onClick={() => navigate("/register")}
+							text="Sign Up"
+						/>
 					</>
 				)}
 				<div onClick={() => setOpen(!open)} className="menuIcon">

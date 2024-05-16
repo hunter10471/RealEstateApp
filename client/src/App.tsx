@@ -1,11 +1,14 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Layout from "./pages/Layout/Layout";
+import { Layout, RequireAuth } from "./pages/Layout/Layout";
 import Home from "./pages/Home/Home";
 import List from "./pages/List/List";
 import Login from "./pages/Login/Login";
 import Single from "./pages/Single/Single";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
+import UpdateUser from "./pages/UpdateUser/UpdateUser";
+import NewPost from "./pages/NewPost/NewPost";
+import { singlePageLoader } from "./lib/loaders";
 
 function App() {
 	const router = createBrowserRouter([
@@ -32,10 +35,25 @@ function App() {
 				{
 					path: "/:id",
 					element: <Single />,
+					loader: singlePageLoader,
 				},
+			],
+		},
+		{
+			path: "/",
+			element: <RequireAuth />,
+			children: [
 				{
 					path: "/profile",
 					element: <Profile />,
+				},
+				{
+					path: "/profile/update",
+					element: <UpdateUser />,
+				},
+				{
+					path: "/post/add",
+					element: <NewPost />,
 				},
 			],
 		},

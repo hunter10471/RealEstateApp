@@ -1,6 +1,7 @@
 .button {
 	font-family: "Roboto";
 	width: 100px;
+	z-index: 99;
 	padding: 10px 20px;
 	border-radius: 4px;
 	font-weight: 500;
@@ -20,4 +21,9 @@
 
 .fullWidth {
 	width: 100%;
+}
+
+.secondary {
+	background-color: teal;
+	color: white;
 }

@@ -13,6 +13,52 @@ model User{
   username String @unique
   password String
   avatar String?
+  posts Post[]
   createdAt DateTime @default(now())
   updatedAt DateTime  @default(now())
+}
+
+model Post {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  price Int
+  images String[]
+  address String
+  city String
+  bedroom Int
+  bathroom Int
+  latitude String
+  longitude String
+  type Type
+  property Property
+  user User @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+  postDetails PostDetails?
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+model PostDetails {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  utilities String?
+  pet String?
+  income String?
+  size Int?
+  school Int?
+  restaurant Int?
+  postId String @unique @db.ObjectId
+  post Post @relation(fields: [postId], references: [id])
+}
+
+enum Type {
+  buy
+  rent
+}
+
+enum Property {
+  apartment
+  house
+  condo
+  land
 }

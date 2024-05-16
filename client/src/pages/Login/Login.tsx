@@ -11,8 +11,7 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<any>(null);
 
-	const user = useContext(AuthContext)?.currentUser;
-	const updateUser = useContext(AuthContext)?.updateUser;
+	const { updateUser } = useContext(AuthContext);
 
 	const navigate = useNavigate();
 
@@ -67,7 +66,7 @@ const Login = () => {
 							<IoEyeOff onClick={() => setShowPass(true)} className="eye" />
 						)}
 					</div>
-					<Button disabled={loading} fullWidth text="Submit" isPrimary />
+					<Button disabled={loading} fullWidth text="Submit" isSecondary />
 				</form>
 				{error && <span className="error">{error}</span>}
 				<Link className="redirect" to={"/register"}>

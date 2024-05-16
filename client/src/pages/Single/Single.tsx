@@ -1,6 +1,6 @@
 import Map from "../../components/Large/Map/Map";
 import Slider from "../../components/Medium/Slider/Slider";
-import { singlePostData, userData } from "../../lib/dummyData";
+import { userData } from "../../lib/dummyData";
 import "./single.scss";
 import {
 	IoLocationOutline,
@@ -14,32 +14,36 @@ import {
 	MdOutlineBathtub,
 	MdOutlineSchool,
 } from "react-icons/md";
-import { FaMoneyBillWave, FaBusSimple, FaRegMoneyBill1 } from "react-icons/fa6";
+import { FaBusSimple, FaRegMoneyBill1 } from "react-icons/fa6";
 import { RxDimensions } from "react-icons/rx";
 import { AiOutlineThunderbolt } from "react-icons/ai";
+import { useLoaderData } from "react-router-dom";
+import { Post } from "../../interfaces/post.interface";
 
 const Single = () => {
+	const post = useLoaderData() as Post;
+	console.log(post);
 	return (
 		<div className="singlePage">
 			<div className="details">
 				<div className="wrapper">
-					<Slider images={singlePostData.images} />
+					<Slider images={post.images} />
 					<div className="info">
 						<div className="top">
 							<div className="post">
-								<h1>{singlePostData.title}</h1>
+								<h1>{post.title}</h1>
 								<div className="address">
 									<IoLocationOutline />
-									<span>{singlePostData.address}</span>
+									<span>{post.address}</span>
 								</div>
-								<div className="price">$ {singlePostData.price}</div>
+								<div className="price">$ {post.price}</div>
 							</div>
 							<div className="user">
 								<img src={userData.img} alt="user avatar" />
 								<span>{userData.name}</span>
 							</div>
 						</div>
-						<div className="bottom">{singlePostData.description}</div>
+						<div className="bottom">{post.postDetails.description}</div>
 					</div>
 				</div>
 			</div>
@@ -110,7 +114,7 @@ const Single = () => {
 					</div>
 					<p className="title">Location</p>
 					<div className="mapContainer">
-						<Map data={[singlePostData as any]} />
+						<Map data={[post as any]} />
 					</div>
 					<div className="buttons">
 						<button>
