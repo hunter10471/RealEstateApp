@@ -3,3 +3,18 @@
 	width: 100%;
 	border-radius: 20px;
 }
+
+.map-skeleton {
+	height: 100%;
+	width: 100%;
+	border-radius: 20px;
+	animation: skeleton-loading 1s infinite alternate;
+	@keyframes skeleton-loading {
+		0% {
+			background-color: hsl(0, 0%, 85%);
+		}
+		100% {
+			background-color: hsl(0, 0%, 91%);
+		}
+	}
+}

@@ -92,3 +92,72 @@
 		}
 	}
 }
+
+.card-skeleton {
+	display: flex;
+	gap: 20px;
+	padding: 25px;
+	border-radius: 20px;
+	animation: skeleton-loading 1s infinite alternate;
+	@keyframes skeleton-loading {
+		0% {
+			background-color: hsl(0, 0%, 85%);
+		}
+		100% {
+			background-color: hsl(0, 0%, 91%);
+		}
+	}
+
+	.image-skeleton {
+		height: 180px;
+		width: 220px;
+		background: #fff;
+		border-radius: 10px;
+	}
+	.textContainer-skeleton {
+		flex: 3;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		.title-skeleton {
+			width: 70%;
+			height: 25px;
+			background: #fff;
+			border-radius: 10px;
+		}
+		.address-skeleton {
+			width: 40%;
+			height: 20px;
+			background: #fff;
+			border-radius: 10px;
+		}
+		.price-skeleton {
+			width: 40%;
+			height: 40px;
+			background: #fff;
+			border-radius: 10px;
+		}
+		.bottom-skeleton {
+			display: flex;
+			justify-content: space-between;
+			gap: 10px;
+
+			.features-skeleton {
+				display: flex;
+				gap: 20px;
+				width: 20%;
+				height: 20px;
+				background: #fff;
+				border-radius: 10px;
+			}
+			.icons-skeleton {
+				display: flex;
+				gap: 20px;
+				background: #fff;
+				width: 20%;
+				height: 20px;
+				border-radius: 10px;
+			}
+		}
+	}
+}

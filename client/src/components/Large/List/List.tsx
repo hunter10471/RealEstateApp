@@ -1,13 +1,12 @@
-import { ListData } from "../../../interfaces/data";
-import { listData } from "../../../lib/dummyData";
+import { Post } from "../../../interfaces/post.interface";
 import Card from "../Card/Card";
 import "./list.scss";
 
 interface ListProps {
-	listData?: ListData[];
+	listData: Post[];
 }
 
-const List = ({}: ListProps) => {
+const List = ({ listData }: ListProps) => {
 	return (
 		<div className="list">
 			{listData.map((item) => (
