@@ -7,6 +7,7 @@ interface ListProps {
 }
 
 const List = ({ listData }: ListProps) => {
+	console.log(listData);
 	return (
 		<div className="list">
 			{listData.map((item) => (

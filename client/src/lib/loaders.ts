@@ -25,3 +25,10 @@ export const listPageLoader = async ({
 		postResponse: postPromise,
 	});
 };
+
+export const profilePageLoader = async ({}: { request: any; params: any }) => {
+	const postPromise = apiRequest("/user/profile/posts");
+	return defer({
+		postResponse: postPromise,
+	});
+};

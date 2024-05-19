@@ -1,10 +1,11 @@
 import express from "express";
-import { isAdmin, loggedIn } from "../controllers/test.controller";
 import { verifyToken } from "../middleware/verifyToken";
 import {
 	deleteUser,
 	getUser,
 	getUsers,
+	profilePosts,
+	savePost,
 	updateUser,
 } from "../controllers/user.Controller";
 
@@ -14,5 +15,7 @@ router.get("/", verifyToken, getUsers);
 router.get("/:id", verifyToken, getUser);
 router.put("/:id", verifyToken, updateUser);
 router.delete("/:id", verifyToken, deleteUser);
+router.post("/save", verifyToken, savePost);
+router.get("/profile/posts", verifyToken, profilePosts);
 
 export default router;

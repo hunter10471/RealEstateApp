@@ -17,6 +17,7 @@ export interface Post {
 	user: User;
 	userId: string;
 	postDetails: PostDetails;
+	isSaved?: boolean;
 	createdAt: Date;
 	updatedAt: Date;
 }

@@ -16,12 +16,30 @@ import {
 import { FaBusSimple, FaRegMoneyBill1 } from "react-icons/fa6";
 import { RxDimensions } from "react-icons/rx";
 import { AiOutlineThunderbolt } from "react-icons/ai";
-import { useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router-dom";
 import { Post } from "../../interfaces/post.interface";
 import DomPurify from "dompurify";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
 
 const Single = () => {
 	const post = useLoaderData() as Post;
+	const { currentUser } = useContext(AuthContext);
+	const [saved, setSaved] = useState(post.isSaved);
+	const handleSave = async () => {
+		if (currentUser) {
+			redirect("/login");
+		}
+		setSaved((prev) => !prev);
+		try {
+			await apiRequest.post("/user/save", { postId: post.id });
+		} catch (error) {
+			console.log(error);
+			setSaved((prev) => !prev);
+		}
+	};
+
 	return (
 		<div className="singlePage">
 			<div className="details">
@@ -134,8 +152,11 @@ const Single = () => {
 							<span>Send a message</span>
 							<MdChatBubbleOutline className="icon-button" />
 						</button>
-						<button>
-							<span>Save the place</span>
+						<button
+							style={{ backgroundColor: saved ? "#fece51" : "white" }}
+							onClick={handleSave}
+						>
+							<span>{saved ? "Place saved" : "Save the place"}</span>
 							<MdOutlineBookmarkBorder className="icon-button" />
 						</button>
 					</div>

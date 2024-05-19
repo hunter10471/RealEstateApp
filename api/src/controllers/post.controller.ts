@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { PostData } from "../interfaces/PostData";
 import { Property, Type } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 export const getPosts = async (req: Request, res: Response) => {
 	try {
@@ -18,9 +19,8 @@ export const getPosts = async (req: Request, res: Response) => {
 				},
 			},
 		});
-		setTimeout(() => {
-			return res.status(200).json(posts);
-		}, 7000);
+
+		return res.status(200).json(posts);
 	} catch (error) {
 		console.log(error);
 		return res
@@ -39,7 +39,33 @@ export const getPost = async (req: Request, res: Response) => {
 				user: { select: { username: true, email: true, avatar: true } },
 			},
 		});
-		return res.status(200).json(post);
+		let userId;
+		const token = req.cookies.token;
+		if (token) {
+			jwt.verify(
+				token,
+				process.env.JWT_SECRET_KEY as string,
+				async (err: any, payload: any) => {
+					if (err) {
+						throw new Error(err);
+					} else {
+						const savedPost = await prisma.savedPost.findUnique({
+							where: {
+								userId_postId: {
+									postId: id,
+									userId: payload.id,
+								},
+							},
+						});
+						return res
+							.status(200)
+							.json({ ...post, isSaved: savedPost ? true : false });
+					}
+				}
+			);
+		} else {
+			return res.status(200).json({ ...post, isSaved: false });
+		}
 	} catch (error) {
 		console.log(error);
 		return res
@@ -52,7 +78,6 @@ export const addPost = async (req: Request, res: Response) => {
 	try {
 		const body: PostData = req.body;
 		const userId = req.userId;
-		console.log(body);
 		const newPost = await prisma.post.create({
 			data: {
 				...body.postData,

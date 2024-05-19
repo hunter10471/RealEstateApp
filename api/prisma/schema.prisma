@@ -14,6 +14,7 @@ model User{
   password String
   avatar String?
   posts Post[]
+  savedPosts SavedPost[]
   createdAt DateTime @default(now())
   updatedAt DateTime  @default(now())
 }
@@ -34,6 +35,7 @@ model Post {
   user User @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
   postDetails PostDetails?
+  savedPosts SavedPost[]
   createdAt DateTime @default(now())
   updatedAt DateTime  @default(now())
 }
@@ -50,6 +52,16 @@ model PostDetails {
   bus Int?
   postId String @unique @db.ObjectId
   post Post @relation(fields: [postId], references: [id])
+}
+
+model SavedPost {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  userId String @db.ObjectId @unique
+  postId String @db.ObjectId @unique
+  createdAt DateTime @default(now())
+  @@unique([userId, postId])
 }
 
 enum Type {

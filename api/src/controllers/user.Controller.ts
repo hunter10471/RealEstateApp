@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { User } from "@prisma/client";
+import { SavedPost, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -62,6 +62,7 @@ export const updateUser = async (req: Request, res: Response) => {
 			.json({ message: "An error occurred while updating the user.", error });
 	}
 };
+
 export const deleteUser = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id;
@@ -75,5 +76,59 @@ export const deleteUser = async (req: Request, res: Response) => {
 		return res
 			.status(500)
 			.json({ message: "An error occurred while deleting the user.", error });
+	}
+};
+
+export const savePost = async (req: Request, res: Response) => {
+	try {
+		const postId = req.body.postId;
+		const tokenUserId = req.userId;
+		const savedPost = await prisma.savedPost.findUnique({
+			where: {
+				userId_postId: {
+					userId: tokenUserId,
+					postId,
+				},
+			},
+		});
+		if (savedPost) {
+			await prisma.savedPost.delete({
+				where: {
+					id: savedPost.id,
+				},
+			});
+			return res.status(200).json({ message: "Post removed from saved list." });
+		} else {
+			await prisma.savedPost.create({ data: { postId, userId: tokenUserId } });
+			return res.status(200).json({ message: "Post saved." });
+		}
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ message: "An error occurred while saving the post.", error });
+	}
+};
+
+export const profilePosts = async (req: Request, res: Response) => {
+	try {
+		const userId = req.userId;
+		const userPosts = await prisma.post.findMany({
+			where: {
+				userId,
+			},
+		});
+		const saved = await prisma.savedPost.findMany({
+			where: {
+				userId,
+			},
+			include: { post: true },
+		});
+		const savedPosts = saved.map((savedPost) => savedPost.post);
+		return res.status(200).json({ userPosts, savedPosts });
+	} catch (error) {
+		return res.status(500).json({
+			message: "An error occurred while fetching profile posts.",
+			error,
+		});
 	}
 };

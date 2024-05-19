@@ -8,7 +8,11 @@ import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
 import UpdateUser from "./pages/UpdateUser/UpdateUser";
 import NewPost from "./pages/NewPost/NewPost";
-import { listPageLoader, singlePageLoader } from "./lib/loaders";
+import {
+	listPageLoader,
+	profilePageLoader,
+	singlePageLoader,
+} from "./lib/loaders";
 
 function App() {
 	const router = createBrowserRouter([
@@ -47,6 +51,7 @@ function App() {
 				{
 					path: "/profile",
 					element: <Profile />,
+					loader: profilePageLoader,
 				},
 				{
 					path: "/profile/update",
