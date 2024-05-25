@@ -7,6 +7,7 @@ import { Suspense, useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import CardSkeleton from "../../components/Large/Card/CardSkeleton";
 import { Post } from "../../interfaces/post.interface";
+import { Chat as ChatTypes } from "../../interfaces/chat.interface";
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Profile = () => {
 	const { currentUser, updateUser } = useContext(AuthContext);
 	const data = useLoaderData() as {
 		postResponse: { data: { userPosts: Post[]; savedPosts: Post[] } };
+		chatResponse: { data: { chats: ChatTypes[] } };
 	};
 	console.log(data);
 	const handleLogout = async () => {
@@ -106,7 +108,14 @@ const Profile = () => {
 			</div>
 			<div className="chatContainer">
 				<div className="wrapper">
-					<Chat />
+					<Suspense fallback={<>loading chat</>}>
+						<Await
+							resolve={data.chatResponse}
+							errorElement={<p>Error loading chats</p>}
+						>
+							{(chatResponse) => <Chat chats={chatResponse.data} />}
+						</Await>
+					</Suspense>
 				</div>
 			</div>
 		</div>
