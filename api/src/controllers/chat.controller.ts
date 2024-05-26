@@ -17,7 +17,7 @@ export const getChats = async (req: Request, res: Response) => {
 		});
 		chats.forEach((chat: ChatType) => {
 			chat.users = chat.users.filter((user) => user.id !== userId);
-			chat.reciever = chat.users[0];
+			chat.receiver = chat.users[0];
 		});
 		return res.status(200).json(chats);
 	} catch (error) {
@@ -58,10 +58,10 @@ export const getChat = async (req: Request, res: Response) => {
 export const addChat = async (req: Request, res: Response) => {
 	try {
 		const userId = req.userId;
-		const { recieverId } = req.body;
+		const { receieverId } = req.body;
 		const newChat = await prisma.chat.create({
 			data: {
-				userIds: [userId, recieverId],
+				userIds: [userId, receieverId],
 			},
 		});
 		return res.status(200).json(newChat);

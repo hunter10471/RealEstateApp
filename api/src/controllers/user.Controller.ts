@@ -132,3 +132,25 @@ export const profilePosts = async (req: Request, res: Response) => {
 		});
 	}
 };
+
+export const getNotification = async (req: Request, res: Response) => {
+	try {
+		const userId = req.userId;
+		const chatsNumber = await prisma.chat.count({
+			where: {
+				userIds: { hasSome: [userId] },
+				NOT: {
+					seenBy: {
+						hasSome: [userId],
+					},
+				},
+			},
+		});
+		return res.status(200).json(chatsNumber);
+	} catch (error) {
+		return res.status(500).json({
+			message: "An error occurred while fetching notifications.",
+			error,
+		});
+	}
+};
