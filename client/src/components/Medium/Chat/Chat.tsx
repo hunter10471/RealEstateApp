@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./chat.scss";
 import { IoMdClose } from "react-icons/io";
 import { Chat as ChatTypes } from "../../../interfaces/chat.interface";
@@ -7,6 +7,8 @@ import apiRequest from "../../../lib/apiRequest";
 import { User } from "../../../interfaces/user.interface";
 import { format } from "timeago.js";
 import { Message } from "../../../interfaces/message.interface";
+import { SocketContext } from "../../../context/SocketContext";
+import { useStore } from "../../../lib/notificationStore";
 
 interface ChatProps {
 	chats: ChatTypes[];
@@ -15,10 +17,16 @@ interface ChatProps {
 const Chat = ({ chats }: ChatProps) => {
 	const [chat, setChat] = useState<any>(null);
 	const { currentUser } = useContext(AuthContext);
-	const handleOpenChat = async (id: string, reciever: User) => {
+	const { socket } = useContext(SocketContext);
+	const messageEndRef = useRef<HTMLDivElement>(null);
+	const decrease = useStore((state) => state.decrease);
+	const handleOpenChat = async (id: string, receiver: User) => {
 		try {
 			const res = await apiRequest.get("/chat/" + id);
-			setChat({ ...res.data, reciever });
+			if (!res.data.seenBy.includes(currentUser?.id)) {
+				decrease();
+			}
+			setChat({ ...res.data, receiver });
 		} catch (error) {
 			console.log(error);
 		}
@@ -30,12 +38,17 @@ const Chat = ({ chats }: ChatProps) => {
 		if (!text) return;
 		try {
 			const res = await apiRequest.post("/message/" + chat?.id, { text });
+
 			setChat((prev: ChatTypes) => ({
 				...prev,
 				lastMessage: text,
 				messages: [...prev?.messages, res.data],
 			}));
 			e.target.reset();
+			socket?.emit("sendMessage", {
+				receiverId: chat.receiver.id,
+				data: res.data,
+			});
 			const chatIndex = chats.findIndex((item) => item.id === chat.id);
 			if (chatIndex !== -1) {
 				chats[chatIndex].lastMessage = text;
@@ -44,29 +57,58 @@ const Chat = ({ chats }: ChatProps) => {
 			console.log(error);
 		}
 	};
+
+	useEffect(() => {
+		const read = async () => {
+			try {
+				await apiRequest.put("/chat/read/" + chat.id);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		if (chat && socket) {
+			socket.on("getMessage", (data) => {
+				if (chat.id === data.chatId) {
+					setChat((prev: ChatTypes) => ({
+						...prev,
+						messages: [...prev.messages, data],
+					}));
+					read();
+				}
+			});
+
+			return () => {
+				socket.off("getMessage");
+			};
+		}
+	}, [socket, chat]);
+
+	useEffect(() => {
+		messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [chat]);
 	return (
 		<div className="chat">
 			<div className="messages">
 				<h1>Messages</h1>
-				{chats.map((chat) => (
+				{chats.map((item) => (
 					<div
 						style={{
-							backgroundColor: chat.seenBy.includes(
-								currentUser ? currentUser.id : ""
-							)
-								? "white"
-								: "#fecd514e",
+							backgroundColor:
+								item.seenBy.includes(currentUser ? currentUser.id : "") ||
+								(chat && chat.id) === item.id
+									? "white"
+									: "#fecd514e",
 						}}
-						key={chat.id}
+						key={item.id}
 						className="message"
-						onClick={() => handleOpenChat(chat.id, chat.reciever)}
+						onClick={() => handleOpenChat(item.id, item.receiver)}
 					>
 						<img
-							src={chat.reciever.avatar || "/assets/avatar.png"}
+							src={item.receiver.avatar || "/assets/avatar.png"}
 							alt="avatar"
 						/>
-						<span>{chat.reciever.username}</span>
-						<p>{chat.lastMessage}</p>
+						<span>{item.receiver.username}</span>
+						<p>{item.lastMessage}</p>
 					</div>
 				))}
 			</div>
@@ -75,10 +117,10 @@ const Chat = ({ chats }: ChatProps) => {
 					<div className="top">
 						<div className="user">
 							<img
-								src={chat.reciever.avatar || "/assets/avatar.png"}
+								src={chat.receiver.avatar || "/assets/avatar.png"}
 								alt="avatar"
 							/>
-							<span>{chat.reciever.username}</span>
+							<span>{chat.receiver.username}</span>
 						</div>
 						<IoMdClose onClick={() => setChat(null)} className="close" />
 					</div>
@@ -98,11 +140,13 @@ const Chat = ({ chats }: ChatProps) => {
 										: undefined,
 								}}
 								className="chatMessage"
+								key={message.id}
 							>
 								<p>{message.text}</p>
 								<span>{format(message.createdAt)}</span>
 							</div>
 						))}
+						<div ref={messageEndRef}></div>
 					</div>
 					<form onSubmit={handleSubmit} className="bottom">
 						<textarea name="text"></textarea>

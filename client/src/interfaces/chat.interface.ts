@@ -7,7 +7,7 @@ export interface Chat {
 	userIds: string[];
 	seenBy: string[];
 	messages: Message[];
-	reciever: User;
+	receiver: User;
 	lastMessage?: string;
 	createdAt: Date;
 }

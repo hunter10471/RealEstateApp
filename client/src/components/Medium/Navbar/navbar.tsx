@@ -6,14 +6,21 @@ import { useContext, useEffect, useState } from "react";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import { useStore } from "../../../lib/notificationStore";
 
 interface NavbarProps {}
 
 const Navbar = ({}: NavbarProps) => {
 	const [open, setOpen] = useState(false);
 	const { currentUser } = useContext(AuthContext);
+	const fetch = useStore((state) => state.fetch);
+	const number = useStore((state) => state.number);
 	const { width } = useWindowSize();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (currentUser) fetch();
+	}, []);
 
 	useEffect(() => {
 		if (width && width > 760) {
@@ -37,7 +44,7 @@ const Navbar = ({}: NavbarProps) => {
 						<span>{currentUser.username}</span>
 						<Link className="profile" to={"/profile"}>
 							Profile
-							<div className="notification">3</div>
+							{number > 0 && <div className="notification">{number}</div>}
 						</Link>
 					</div>
 				) : (
